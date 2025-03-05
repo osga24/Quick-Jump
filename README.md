@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-- Oscar - [GitHub](https://github.com/osga24)
+- OsGa - [GitHub](https://github.com/osga24)
 
 For any questions or suggestions, feel free to open an issue or contact us. Happy jumping!

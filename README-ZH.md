@@ -143,7 +143,7 @@ chmod +x uninstall.sh
 
 ## 👨‍💻 Author | 作者
 
-- Your Name - [GitHub](https://github.com/yourusername)
+- OsGa - [GitHub](https://github.com/yourusername)
 
 For any questions or suggestions, feel free to open an issue or contact us. Happy jumping!
 
