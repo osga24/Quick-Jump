@@ -1,9 +1,9 @@
 # 🚀 QuickJump
 QuickJump is a beautiful, practical command-line tool that allows you to quickly jump to frequently used directories using custom hotkeys. Say goodbye to lengthy `cd` commands and boost your productivity!
 
+![QuickJump Demo](screenshots/demo.gif)
 
 - ✈️ [中文文檔請點擊這裡](README-ZH.md)
-![QuickJump Demo](screenshots/demo.gif)
 
 ## ✨ Features
 

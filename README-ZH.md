@@ -2,8 +2,9 @@
 
 QuickJump 是一個美觀、實用的命令行工具，讓您能夠使用自定義快捷鍵快速跳轉到常用目錄。告別冗長的 `cd` 命令，提高您的工作效率！
 
-- ✈️ [英文文檔請點擊這裡](README.md)
 ![QuickJump 演示](screenshots/demo.gif)
+
+- ✈️ [英文文檔請點擊這裡](README.md)
 
 ### ✨ 特點
 
