@@ -297,20 +297,17 @@ list_hotkeys() {
     print_message "📊" "$BLUE" "Total of $count hotkeys"
     echo ""
 
-    # Format output
-    echo -e "${BOLD}  Hotkey\tDirectory Path${NC}"
-    echo -e "${BOLD}  -------\t--------------${NC}"
+    # Format output - use printf for proper formatting instead of tabs
+    printf "${BOLD}  %-15s %s${NC}\n" "Hotkey" "Directory Path"
+    printf "${BOLD}  %-15s %s${NC}\n" "---------------" "--------------------"
 
-    # Output hotkeys and paths in table format
-    jq -r 'to_entries | .[] | "  \(.key)\t\(.value)"' "$CONFIG_FILE" | sort | while read -r line; do
-        key=$(echo "$line" | awk '{print $1}')
-        path=$(echo "$line" | awk '{$1=""; print $0}' | sed 's/^[ \t]*//')
-        echo -e "${GREEN}  $key${NC}\t${BLUE}$path${NC}"
+    # Output hotkeys and paths in table format using printf for alignment
+    jq -r 'to_entries | .[] | [.key, .value] | @tsv' "$CONFIG_FILE" | sort | while IFS=$'\t' read -r key path; do
+        printf "${GREEN}  %-15s${NC} ${BLUE}%s${NC}\n" "$key" "$path"
     done
 
     echo -e "\n${CYAN}${BOLD}============================================${NC}"
 }
-
 # Remove a hotkey
 remove_hotkey() {
     local hotkey="$1"
