@@ -43,7 +43,7 @@ print_header() {
 	echo "════════════════════════════════════════════════"
 	echo -e "${NC}"
 	echo -e "${BLUE}Jump to any directory instantly with custom hotkeys${NC}"
-	echo -e "${YELLOW}Author: OsGa${NC}\n"
+	echo -e "${YELLOW}Author: Your Name${NC}\n"
 }
 
 print_step() {
@@ -158,15 +158,16 @@ setup_directories() {
 	fi
 }
 
-# Copy main script
-copy_main_script() {
-	print_step "3" "Installing main script"
+# Copy required scripts
+copy_required_scripts() {
+	print_step "3" "Installing required scripts"
 
-	SCRIPT_FILE="$CONFIG_DIR/quickjump.sh"
-
-	# Check if main.sh exists in the same directory as install.sh
+	# Get installation directory
 	INSTALL_DIR="$(dirname "${BASH_SOURCE[0]}")"
+
+	# Check required files
 	MAIN_SCRIPT="$INSTALL_DIR/main.sh"
+	FUNCTION_SCRIPT="$INSTALL_DIR/quickjump-function.sh"
 
 	if [ ! -f "$MAIN_SCRIPT" ]; then
 		print_message "$ERROR" "$RED" "main.sh not found in installation directory: $INSTALL_DIR"
@@ -174,78 +175,22 @@ copy_main_script() {
 		exit 1
 	fi
 
-	# Copy main.sh to the configuration directory as quickjump.sh
-	cp "$MAIN_SCRIPT" "$SCRIPT_FILE"
+	if [ ! -f "$FUNCTION_SCRIPT" ]; then
+		print_message "$ERROR" "$RED" "quickjump-function.sh not found in installation directory: $INSTALL_DIR"
+		print_message "$ERROR" "$RED" "Please ensure quickjump-function.sh is in the same directory as install.sh"
+		exit 1
+	fi
 
-	# Set execute permissions
+	# Copy main script
+	SCRIPT_FILE="$CONFIG_DIR/quickjump.sh"
+	cp "$MAIN_SCRIPT" "$SCRIPT_FILE"
 	chmod +x "$SCRIPT_FILE"
 	print_message "$MAGIC" "$GREEN" "Copied main script: $MAIN_SCRIPT -> $SCRIPT_FILE"
 
-	# Create shell function file
+	# Copy function script
 	FUNCTION_FILE="$CONFIG_DIR/quickjump-function.sh"
-
-	cat >"$FUNCTION_FILE" <<'EOF'
-# QuickJump - Fast Directory Navigation Function
-
-# Colors
-GREEN='\033[0;32m'
-NC='\033[0m' # Reset color
-
-# qj command function
-qj() {
-    if [ "$1" = "add" ] || [ "$1" = "list" ] || [ "$1" = "remove" ] || [ "$1" = "help" ] || [ -z "$1" ]; then
-        "$HOME/.config/quickjump/quickjump.sh" "$@"
-    else
-        local target_dir=$("$HOME/.config/quickjump/quickjump.sh" --get-path "$1")
-        if [[ "$target_dir" == /* ]]; then
-            cd "$target_dir"
-            echo -e "${GREEN}🚀 Jumped to: $target_dir${NC}"
-        else
-            # Output error message
-            echo "$target_dir"
-        fi
-    fi
-}
-
-# Auto-completion setup
-_qj_completions() {
-    local cur prev
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-
-    if [ "$COMP_CWORD" -eq 1 ]; then
-        # Main command auto-completion
-        local commands="add list remove help"
-        local hotkeys=$(jq -r 'keys[]' "$HOME/.config/quickjump/paths.json" 2>/dev/null)
-        COMPREPLY=( $(compgen -W "${commands} ${hotkeys}" -- ${cur}) )
-    elif [ "$COMP_CWORD" -gt 1 ] && [ "$prev" = "add" ]; then
-        # Path auto-completion after 'add' command
-        COMPREPLY=( $(compgen -d -- ${cur}) )
-    elif [ "$COMP_CWORD" -gt 1 ] && [ "$prev" = "remove" ]; then
-        # Hotkey auto-completion after 'remove' command
-        local hotkeys=$(jq -r 'keys[]' "$HOME/.config/quickjump/paths.json" 2>/dev/null)
-        COMPREPLY=( $(compgen -W "${hotkeys}" -- ${cur}) )
-    fi
-
-    return 0
-}
-
-# Enable auto-completion
-if [ -n "$BASH_VERSION" ]; then
-    complete -F _qj_completions qj
-elif [ -n "$ZSH_VERSION" ]; then
-    # ZSH compatibility handling
-    autoload -U +X compinit && compinit
-    autoload -U +X bashcompinit && bashcompinit
-    complete -F _qj_completions qj
-fi
-
-# Welcome message (commented out to avoid Powerlevel10k instant prompt issues)
-# echo -e "${GREEN}🚀 QuickJump is ready!${NC} Use ${GREEN}qj help${NC} to see usage instructions"
-EOF
-
-	print_message "$MAGIC" "$GREEN" "Created function definition file: $FUNCTION_FILE"
+	cp "$FUNCTION_SCRIPT" "$FUNCTION_FILE"
+	print_message "$MAGIC" "$GREEN" "Copied function script: $FUNCTION_SCRIPT -> $FUNCTION_FILE"
 }
 
 # Update shell configuration
@@ -308,6 +253,6 @@ print_header
 clean_old_version
 check_dependencies
 setup_directories
-copy_main_script
+copy_required_scripts
 update_shell_config
 finish_installation
