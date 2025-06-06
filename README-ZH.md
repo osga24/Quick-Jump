@@ -68,8 +68,8 @@ chmod +x install.sh
 
 3. 下載腳本文件：
    ```bash
-   curl -o ~/.config/quickjump/quickjump.sh https://raw.githubusercontent.com/yourusername/quickjump/main/quickjump.sh
-   curl -o ~/.config/quickjump/quickjump-function.sh https://raw.githubusercontent.com/yourusername/quickjump/main/quickjump-function.sh
+   curl -o ~/.config/quickjump/quickjump.sh https://raw.githubusercontent.com/osga24/quickjump/main/quickjump.sh
+   curl -o ~/.config/quickjump/quickjump-function.sh https://raw.githubusercontent.com/osga24/quickjump/main/quickjump-function.sh
    chmod +x ~/.config/quickjump/quickjump.sh
    ```
 
@@ -120,7 +120,7 @@ qj help
 
 ```bash
 # 下載卸載腳本
-curl -o uninstall.sh https://raw.githubusercontent.com/yourusername/quickjump/main/uninstall.sh
+curl -o uninstall.sh https://raw.githubusercontent.com/osga24/quickjump/main/uninstall.sh
 
 # 賦予執行權限
 chmod +x uninstall.sh
@@ -143,7 +143,7 @@ chmod +x uninstall.sh
 
 ## 👨‍💻 Author | 作者
 
-- OsGa - [GitHub](https://github.com/yourusername)
+- OsGa - [GitHub](https://github.com/osga24)
 
 For any questions or suggestions, feel free to open an issue or contact us. Happy jumping!
 
